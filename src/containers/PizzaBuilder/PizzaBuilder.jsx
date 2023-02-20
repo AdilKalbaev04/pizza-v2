@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { Controls } from '@/components/Controls/Controls';
 import OrderInfo from '@/components/Pizza/OrderInfo/OrderInfo';
@@ -14,10 +15,10 @@ const PizzaBuilder = () => {
     sausage: { name: 'Колбаса', price: 35, count: 0 },
     mushrooms: { name: 'Грибы', price: 20, count: 0 },
   });
-
   const [price, setPrice] = useState(100);
-
   const [isPurchasing, setIsPurchasing] = useState(false);
+
+  const navigate = useNavigate();
 
   const addIngredient = (type) => {
     setIngs((ings) => {
@@ -76,7 +77,10 @@ const PizzaBuilder = () => {
   };
 
   const purchaseContunieHandler = () => {
-    alert('to be continued');
+    navigate({
+      pathname: '/checkout',
+      search: '?name=mike',
+    });
   };
 
   return (
