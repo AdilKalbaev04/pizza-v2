@@ -1,7 +1,9 @@
 import { useState } from 'react';
 
 import { Controls } from '@/components/Controls/Controls';
+import OrderInfo from '@/components/Pizza/OrderInfo/OrderInfo';
 import { Pizza } from '@/components/Pizza/Pizza';
+import Modal from '@/components/UI/Modal/Modal';
 
 import styles from './PizzaBuilder.module.css';
 
@@ -14,6 +16,8 @@ const PizzaBuilder = () => {
   });
 
   const [price, setPrice] = useState(100);
+
+  const [isPurchasing, setIsPurchasing] = useState(false);
 
   const addIngredient = (type) => {
     setIngs((ings) => {
@@ -43,14 +47,56 @@ const PizzaBuilder = () => {
     setPrice((price) => price - ings[type].price);
   };
 
+  const isPurchasable = (ings) => {
+    const count = Object.values(ings).reduce((acc, item) => {
+      return acc + item.count;
+    }, 0);
+
+    return count > 0;
+  };
+
+  const purchaseHandler = () => setIsPurchasing(true);
+
+  const closeModal = () => {
+    setIsPurchasing(false);
+  };
+
+  const purchaseCancelHandler = () => {
+    setPrice(100);
+
+    setIngs((ings) => {
+      const copy = JSON.parse(JSON.stringify(ings));
+      for (const ingKey in copy) {
+        copy[ingKey].count = 0;
+      }
+      return copy;
+    });
+
+    setIsPurchasing(false);
+  };
+
+  const purchaseContunieHandler = () => {
+    alert('to be continued');
+  };
+
   return (
     <div className={styles.pizzaWrap}>
+      <Modal isVisible={isPurchasing} close={closeModal}>
+        <OrderInfo
+          ings={ings}
+          price={price}
+          cancelled={purchaseCancelHandler}
+          continued={purchaseContunieHandler}
+        />
+      </Modal>
       <Pizza ings={ings} />
       <Controls
         ings={ings}
         price={price}
         add={addIngredient}
         remove={removeIngredient}
+        purchasable={isPurchasable(ings)}
+        ordered={purchaseHandler}
       />
     </div>
   );

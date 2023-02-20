@@ -1,0 +1,22 @@
+.orderTitle {
+  margin-top: 0;
+  font-size: 1.4rem;
+  text-align: center;
+  text-transform: uppercase;
+}
+.orderList {
+  margin: 1rem 0;
+}
+.orderItem {
+  margin-bottom: 0.5rem;
+}
+.orderItem span {
+  margin-right: 0.5rem;
+}
+.orderPrice {
+  margin: 1.5rem 0;
+  font-size: 1.1rem;
+}
+.orderPrice strong {
+  font-size: 1.2rem;
+}
