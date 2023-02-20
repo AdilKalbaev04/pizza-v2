@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { createSearchParams, useNavigate } from 'react-router-dom';
 
 import { Controls } from '@/components/Controls/Controls';
 import OrderInfo from '@/components/Pizza/OrderInfo/OrderInfo';
@@ -77,9 +77,14 @@ const PizzaBuilder = () => {
   };
 
   const purchaseContunieHandler = () => {
+    const params = Object.keys(ings).reduce((acc, item) => {
+      acc[item] = ings[item].count; // {sausage: 1}
+      return acc;
+    }, {});
+
     navigate({
       pathname: '/checkout',
-      search: '?name=mike',
+      search: '?' + createSearchParams(params),
     });
   };
 
