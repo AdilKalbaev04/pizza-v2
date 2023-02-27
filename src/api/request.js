@@ -17,3 +17,7 @@ export const sendOrder = (data) => {
 export const fetchOrders = () => {
   return firebaseApi.get('orders.json').json();
 };
+
+export const fetchOrderItem = (id) => {
+  return firebaseApi.get(`orders/${id}.json`).json();
+};

@@ -6,10 +6,9 @@ import { Loader } from '@/components/UI/Loader/Loader';
 
 export const Orders = () => {
   const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
     fetchOrders()
       .then((data) => {
         setOrders(

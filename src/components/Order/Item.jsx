@@ -1,8 +1,11 @@
+import { useNavigate } from 'react-router-dom';
+
 import styles from './style.module.css';
 
-export const Item = ({ customer, ingredients, number }) => {
+export const Item = ({ customer, ingredients, number, id }) => {
+  const navigate = useNavigate();
   return (
-    <li className={styles.item}>
+    <li className={styles.item} onClick={() => navigate(`/orders/${id}`)}>
       <h3 className={styles.title}>
         Заказ <strong>#{number}</strong>
       </h3>
