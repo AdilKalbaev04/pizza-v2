@@ -19,7 +19,7 @@ export const OrderInfo = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [params.id]);
 
   if (loading) return <Loader />;
 

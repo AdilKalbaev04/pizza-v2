@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 
 import { sendOrder } from '@/api/request';
 import Button from '@/components/UI/Button/Button';
@@ -19,6 +19,8 @@ const ContactData = () => {
 
   const { ings } = useOutletContext();
 
+  const navigate = useNavigate();
+
   const changeHandler = (event) => {
     setContact((contact) => {
       return {
@@ -37,11 +39,15 @@ const ContactData = () => {
       customer: { ...contact },
     };
 
-    sendOrder(order).finally(() => {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 2000);
-    });
+    sendOrder(order)
+      .then(() => {
+        navigate('/');
+      })
+      .finally(() => {
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 2000);
+      });
   };
 
   if (isLoading) return <Loader />;
