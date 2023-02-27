@@ -13,3 +13,7 @@ export const sendOrder = (data) => {
   */
   return firebaseApi.post('orders.json', { json: data });
 };
+
+export const fetchOrders = () => {
+  return firebaseApi.get('orders.json').json();
+};

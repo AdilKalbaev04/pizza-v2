@@ -1,5 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
+import { fetchOrders } from '@/api/request';
+import { OrderList } from '@/components/Order';
+import { Loader } from '@/components/UI/Loader/Loader';
 
 export const Orders = () => {
-  return <div>Orders will be here</div>;
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    fetchOrders()
+      .then((data) => {
+        setOrders(
+          Object.keys(data)
+            .map((key) => {
+              return {
+                ...data[key],
+                id: key,
+              };
+            })
+            .reverse()
+        );
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) return <Loader />;
+
+  return <OrderList orders={orders} />;
 };
