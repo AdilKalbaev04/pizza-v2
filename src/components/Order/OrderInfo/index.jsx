@@ -1,27 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import { fetchOrderItem } from '@/api/request';
 import { Loader } from '@/components/UI/Loader/Loader';
+import { orderFetchById } from '@/store/reducers/order.reducer';
 
 import { Item } from '../Item';
 
 export const OrderInfo = () => {
-  const [order, setOrder] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { loading, currentOrder, errors } = useSelector(
+    (store) => store.orders
+  );
+
   const params = useParams();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchOrderItem(params.id)
-      .then((data) => {
-        setOrder(data);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    dispatch(orderFetchById(params.id));
   }, [params.id]);
 
   if (loading) return <Loader />;
 
-  return <Item number={1} {...order} />;
+  if (errors) return <h1>{errors.message}</h1>;
+
+  return currentOrder && <Item number={1} {...currentOrder} />;
 };

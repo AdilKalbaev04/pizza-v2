@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createSearchParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { Controls } from '@/components/Controls/Controls';
 import OrderInfo from '@/components/Pizza/OrderInfo/OrderInfo';
