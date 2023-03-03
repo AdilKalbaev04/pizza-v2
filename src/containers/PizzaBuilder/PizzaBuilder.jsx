@@ -1,51 +1,30 @@
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { createSearchParams, useNavigate } from 'react-router-dom';
 
 import { Controls } from '@/components/Controls/Controls';
 import OrderInfo from '@/components/Pizza/OrderInfo/OrderInfo';
 import { Pizza } from '@/components/Pizza/Pizza';
 import Modal from '@/components/UI/Modal/Modal';
+import { addIng, removeIng } from '@/store/reducers/pizza.reducer';
 
 import styles from './PizzaBuilder.module.css';
 
 const PizzaBuilder = () => {
-  const [ings, setIngs] = useState({
-    cheese: { name: 'Сыр', price: 15, count: 0 },
-    olives: { name: 'Оливки', price: 25, count: 0 },
-    sausage: { name: 'Колбаса', price: 35, count: 0 },
-    mushrooms: { name: 'Грибы', price: 20, count: 0 },
-  });
-  const [price, setPrice] = useState(100);
+  const { ings, price } = useSelector((store) => store.pizza);
+
   const [isPurchasing, setIsPurchasing] = useState(false);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const addIngredient = (type) => {
-    setIngs((ings) => {
-      const ing = { ...ings[type] };
-      ing.count++;
-
-      return {
-        ...ings,
-        [type]: { ...ing },
-      };
-    });
-    setPrice((price) => price + ings[type].price);
+    dispatch(addIng(type));
   };
 
   const removeIngredient = (type, event) => {
     event.stopPropagation();
-
-    setIngs((ings) => {
-      const ing = { ...ings[type] };
-      ing.count--;
-
-      return {
-        ...ings,
-        [type]: { ...ing },
-      };
-    });
-    setPrice((price) => price - ings[type].price);
+    dispatch(removeIng(type));
   };
 
   const isPurchasable = (ings) => {
@@ -63,30 +42,18 @@ const PizzaBuilder = () => {
   };
 
   const purchaseCancelHandler = () => {
-    setPrice(100);
-
-    setIngs((ings) => {
-      const copy = JSON.parse(JSON.stringify(ings));
-      for (const ingKey in copy) {
-        copy[ingKey].count = 0;
-      }
-      return copy;
-    });
-
+    // setPrice(100);
+    // setIngs((ings) => {
+    //   const copy = JSON.parse(JSON.stringify(ings));
+    //   for (const ingKey in copy) {
+    //     copy[ingKey].count = 0;
+    //   }
+    //   return copy;
+    // });
     setIsPurchasing(false);
   };
 
-  const purchaseContunieHandler = () => {
-    const params = Object.keys(ings).reduce((acc, item) => {
-      acc[item] = ings[item].count; // {sausage: 1}
-      return acc;
-    }, {});
-
-    navigate({
-      pathname: '/checkout',
-      search: '?' + createSearchParams(params),
-    });
-  };
+  const purchaseContunieHandler = () => navigate('/checkout');
 
   return (
     <div className={styles.pizzaWrap}>
