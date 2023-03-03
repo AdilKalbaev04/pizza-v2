@@ -33,11 +33,11 @@ const initialState = {
 const orderSlice = createSlice({
   name: 'orders',
   initialState,
-  extraReducers: {
-    [orderFetch.pending]: (state) => {
+  extraReducers: (builder) => {
+    builder.addCase(orderFetch.pending, (state) => {
       state.loading = true;
-    },
-    [orderFetch.fulfilled]: (state, action) => {
+    });
+    builder.addCase(orderFetch.fulfilled, (state, action) => {
       state.loading = false;
       state.orders = Object.keys(action.payload)
         .map((key) => {
@@ -47,23 +47,25 @@ const orderSlice = createSlice({
           };
         })
         .reverse();
-    },
-    [orderFetch.rejected]: (state, action) => {
+    });
+    builder.addCase(orderFetch.rejected, (state, action) => {
       state.loading = false;
       state.errors = action.payload;
-    },
+    });
 
-    [orderFetchById.pending]: (state) => {
+    builder.addCase(orderFetchById.pending, (state) => {
       state.loading = true;
-    },
-    [orderFetchById.fulfilled]: (state, action) => {
+    });
+
+    builder.addCase(orderFetchById.fulfilled, (state, action) => {
       state.loading = false;
       state.currentOrder = action.payload;
-    },
-    [orderFetchById.rejected]: (state, action) => {
+    });
+
+    builder.addCase(orderFetchById.rejected, (state, action) => {
       state.loading = false;
       state.errors = action.payload;
-    },
+    });
   },
 });
 
