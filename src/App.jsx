@@ -19,7 +19,7 @@ function App() {
           <Route index element={<Orders />} />
           <Route path=":id" element={<OrderInfo />} />
         </Route>
-        <Route path="*" element={<h1>404 Не найдена страница</h1>} />
+        <Route path="*" element={<h1>404 Не найдена страница.</h1>} />
       </Routes>
     </Layout>
   );
